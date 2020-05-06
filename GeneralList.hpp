@@ -15,11 +15,11 @@ class List {
 		Dlist *_back;
 
 		void reccopy(const Dlist *ptr) {
-			if(ptr) { // if(ptr != nullptr) {
+				if(ptr) {
 				reccopy(ptr->next);
 				push_front(ptr->value);
+				}
 			}
-		}
 	public:
 		List() {
 			_size = 0;
@@ -33,10 +33,16 @@ class List {
 			_size=0;
 			reccopy(list._front);
 		}
+		
+		List &operator=(const List &list) {
+			_size = 0;
+			_front = nullptr;
+			_back = nullptr;
+			reccopy(list._front);
+		}
 
 		~List() {
 			while(!empty()) {
-			//while(_size > 0) {
 				pop_front();
 			}
 		}
@@ -57,25 +63,25 @@ class List {
 			return _size;
 		}
 
-		void push_front(Data data) {
-			Dlist *newNode = new Dlist;
-			newNode->value = data;
-			newNode->prev = nullptr;
+		void push_front(const Data data) {
+			Dlist *newNode = new Dlist;  
+			newNode->value = data;       
+			newNode->prev = nullptr;     
 
-			if(_front==nullptr) {
-				newNode->next=nullptr;
-				_back=newNode;
+			if(_front==nullptr) {        
+				newNode->next=nullptr;   
+				_back=newNode;           
 			}
 			else {
-				newNode->next=_front;
-				_front->prev = newNode;
+				newNode->next=_front;    
+				_front->prev = newNode;  
 			}
 
-			_front=newNode;
-			_size++;
+			_front=newNode;              
+			_size++;                     
 		}
 
-		void push_back(Data data) {
+		void push_back(const Data data) {
 			Dlist *newNode = new Dlist;
 			newNode->value = data;
 			newNode->next=nullptr;
@@ -111,19 +117,15 @@ class List {
 
 		//CONVERT THIS FUNCTION
 		void pop_back() {
-			Llist *back_to_remove = _back;
+			Dlist *back_to_remove = _back;
+			_back = _back->prev;
 
-			if(_front->next!=nullptr) {
-				Llist *new_back = _front;
-				while(new_back->next!=_back) {
-					new_back=new_back->next;
-				}
-				new_back->next=nullptr;
-				_back=new_back;
+			if(_back ==nullptr) {
+				_front = nullptr;
 			}
 			else {
-				_front=nullptr;
-				_back=nullptr;
+				_back = _back->prev;
+				_back->next = nullptr;
 			}
 
 			delete back_to_remove;
@@ -137,10 +139,42 @@ class List {
 
 		//Modify this
 		void print() {
-			Llist *temp;
+			Dlist *temp;
 			for(temp=_front; temp!=nullptr; temp=temp->next) {
 				std::cout << temp->value << " ";
 			}
 			std::cout << std::endl;
+		}
+
+		void print_back() {
+			Dlist *temp;
+			for(temp =_back; temp!=nullptr; temp=temp->prev) {
+				std::cout <<temp->value << " ";
+			}
+			std::cout << std::endl;
+		}
+
+		friend bool operator==(const List<Data> &X, const List<Data> &Y) {
+			Dlist *temp1;
+			Dlist *temp2;
+
+			for(temp1=X._front, temp2=Y._front; temp1!=nullptr, temp2!=nullptr; temp1=temp1->next, temp2= temp2->next) {
+				if(temp1->value != temp2->value){
+					return false;
+				}
+			return true;
+			}
+		}
+
+		friend bool operator!=(const List<Data> &X, const List<Data> &Y) {
+			Dlist *temp1;
+			Dlist *temp2;
+
+			for(temp1=X._front, temp2=Y._front; temp1!=nullptr, temp2!=nullptr; temp1=temp1->next, temp2= temp2->next) {
+				if(temp1->value != temp2->value){
+					return true;
+				}
+			return false;
+			}
 		}
 };

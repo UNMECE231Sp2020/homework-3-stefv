@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "GeneralList.h"
+#include "GeneralList.hpp"
 
 int main() {
 	List<int> IntListA;
@@ -41,15 +41,15 @@ int main() {
 	}
 	FloatListD.print();
 
-	FloatList FloatListE=FloatListD;
+	FloatList FloatListE = FloatListD;
 
-	if(FloatListE==FloatListD) {
+	if(FloatListE == FloatListD) {
 		std::cout << "Float vectors are the same!" << std::endl;
 	}
 
 	FloatListE.push_front(1.0);
 
-	if(FloatListE!=FloatListD) {
+	if(FloatListE != FloatListD) {
 		std::cout << "Float vectors are not the same!" << std::endl;
 	}
 
